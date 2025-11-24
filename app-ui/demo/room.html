@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>화상 회의 시스템</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* 헤더 */
+        .header {
+            background: #2a2a2a;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #3a3a3a;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .room-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .room-info {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .btn-danger {
+            background: #e53935;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c62828;
+        }
+
+        /* 메인 레이아웃 */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 120px);
+        }
+
+        /* 비디오 영역 */
+        .video-area {
+            flex: 1;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* 메인 비디오 */
+        .main-video {
+            flex: 1;
+            background: #0a0a0a;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-video::before {
+            content: "메인 비디오";
+            position: absolute;
+            font-size: 24px;
+            color: #444;
+        }
+
+        .video-label {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        /* 참가자 그리드 */
+        .participants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            height: 220px;
+        }
+
+        .participant-video {
+            aspect-ratio: 16/9;
+            background: #0a0a0a;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .participant-video.speaking {
+            border-color: #4caf50;
+        }
+
+        .participant-video::before {
+            content: "👤";
+            font-size: 48px;
+        }
+
+        .participant-name {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .participant-status {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            gap: 4px;
+        }
+
+        .status-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .muted {
+            color: #e53935;
+        }
+
+        /* 사이드바 */
+        .sidebar {
+            width: 360px;
+            background: #2a2a2a;
+            border-left: 1px solid #3a3a3a;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-tabs {
+            display: flex;
+            border-bottom: 1px solid #3a3a3a;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            color: #bbb;
+            background: #333;
+        }
+
+        .tab.active {
+            color: #fff;
+            background: #1a1a1a;
+        }
+
+        .tab-panel {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tab-panel.active {
+            display: flex;
+        }
+
+        .tab-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .tab-input-wrapper {
+            padding: 12px 16px;
+            background: #2a2a2a;
+            border-top: 1px solid #3a3a3a;
+        }
+
+        .tab-input {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tab-input input {
+            flex: 1;
+            padding: 10px 12px;
+            background: #3a3a3a;
+            border: 1px solid #4a4a4a;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .tab-input input:focus {
+            outline: none;
+            border-color: #4caf50;
+        }
+
+        .tab-input button {
+            padding: 10px 20px;
+            background: #4caf50;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .tab-input button:hover {
+            background: #45a049;
+        }
+
+        /* 채팅 메시지 */
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .message-author {
+            font-weight: 600;
+            color: #4caf50;
+        }
+
+        .message-time {
+            color: #888;
+        }
+
+        .message-content {
+            background: #3a3a3a;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* AI 메시지 */
+        .ai-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .user-question {
+            background: #3a3a3a;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .user-label {
+            font-size: 12px;
+            color: #4caf50;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .ai-message {
+            background: #1e3a5f;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .ai-label {
+            font-size: 12px;
+            color: #64b5f6;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        /* 회의록 */
+        .transcript-items {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .transcript-item {
+            border-left: 3px solid #4caf50;
+            padding-left: 12px;
+        }
+
+        .transcript-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+
+        .transcript-speaker {
+            font-weight: 600;
+            color: #4caf50;
+        }
+
+        .transcript-time {
+            color: #888;
+        }
+
+        .transcript-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+
+        /* 참가자 팝업 */
+        .participants-popup {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 320px;
+            max-height: 480px;
+            background: #2a2a2a;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            z-index: 1000;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .participants-popup.active {
+            display: flex;
+            flex-direction: column;
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .popup-header {
+            padding: 16px;
+            border-bottom: 1px solid #3a3a3a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .popup-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: #3a3a3a;
+            color: #888;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #4a4a4a;
+            color: #fff;
+        }
+
+        .participants-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .participant-list-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            background: #3a3a3a;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .participant-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #4caf50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .participant-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .participant-list-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .participant-role {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .participant-icons {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* 컨트롤 바 */
+        .controls {
+            background: #2a2a2a;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            border-top: 1px solid #3a3a3a;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .control-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #3a3a3a;
+            color: white;
+            transition: all 0.2s;
+            min-width: 100px;
+        }
+
+        .control-btn:hover {
+            background: #4a4a4a;
+        }
+
+        .control-btn.on {
+            background: #4caf50;
+        }
+
+        .control-btn.on:hover {
+            background: #45a049;
+        }
+
+        .control-btn.off {
+            background: #e53935;
+        }
+
+        .control-btn.off:hover {
+            background: #c62828;
+        }
+
+        .control-icon {
+            font-size: 24px;
+        }
+
+        .control-label {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .divider {
+            width: 1px;
+            height: 48px;
+            background: #3a3a3a;
+        }
+
+        /* 스크롤바 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #2a2a2a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4a4a4a;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5a5a5a;
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <div class="header">
+        <div class="header-left">
+            <div>
+                <div class="room-title">프로젝트 회의</div>
+                <div class="room-info">참가자 6명 • 00:15:32</div>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="btn btn-danger">회의 종료</button>
+        </div>
+    </div>
+
+    <!-- 메인 컨테이너 -->
+    <div class="main-container">
+        <!-- 비디오 영역 -->
+        <div class="video-area">
+            <!-- 메인 비디오 -->
+            <div class="main-video">
+                <div class="video-label">김철수 (발표중)</div>
+            </div>
+
+            <!-- 참가자 그리드 -->
+            <div class="participants-grid">
+                <div class="participant-video">
+                    <div class="participant-name">이영희</div>
+                    <div class="participant-status">
+                        <span class="status-icon">🎤</span>
+                    </div>
+                </div>
+                <div class="participant-video speaking">
+                    <div class="participant-name">박민수</div>
+                    <div class="participant-status">
+                        <span class="status-icon">🎤</span>
+                        <span class="status-icon">📹</span>
+                    </div>
+                </div>
+                <div class="participant-video">
+                    <div class="participant-name">최지원</div>
+                    <div class="participant-status">
+                        <span class="status-icon muted">🔇</span>
+                    </div>
+                </div>
+                <div class="participant-video">
+                    <div class="participant-name">나 (호스트)</div>
+                    <div class="participant-status">
+                        <span class="status-icon">🎤</span>
+                        <span class="status-icon">📹</span>
+                    </div>
+                </div>
+                <div class="participant-video">
+                    <div class="participant-name">정수진</div>
+                    <div class="participant-status">
+                        <span class="status-icon">🎤</span>
+                        <span class="status-icon">📹</span>
+                    </div>
+                </div>
+                <div class="participant-video">
+                    <div class="participant-name">강동훈</div>
+                    <div class="participant-status">
+                        <span class="status-icon">🎤</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 사이드바 -->
+        <div class="sidebar">
+            <div class="sidebar-tabs">
+                <button class="tab active" onclick="switchTab(0)">채팅</button>
+                <button class="tab" onclick="switchTab(1)">AI</button>
+                <button class="tab" onclick="switchTab(2)">회의록</button>
+            </div>
+
+            <!-- 채팅 탭 -->
+            <div class="tab-panel active">
+                <div class="tab-content">
+                    <div class="chat-messages">
+                        <div class="message">
+                            <div class="message-header">
+                                <span class="message-author">김철수</span>
+                                <span class="message-time">14:35</span>
+                            </div>
+                            <div class="message-content">
+                                안녕하세요! 회의 시작하겠습니다.
+                            </div>
+                        </div>
+                        <div class="message">
+                            <div class="message-header">
+                                <span class="message-author">이영희</span>
+                                <span class="message-time">14:36</span>
+                            </div>
+                            <div class="message-content">
+                                네, 준비되었습니다!
+                            </div>
+                        </div>
+                        <div class="message">
+                            <div class="message-header">
+                                <span class="message-author">박민수</span>
+                                <span class="message-time">14:37</span>
+                            </div>
+                            <div class="message-content">
+                                자료 공유 부탁드립니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-input-wrapper">
+                    <div class="tab-input">
+                        <input type="text" placeholder="메시지를 입력하세요...">
+                        <button>전송</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI 탭 -->
+            <div class="tab-panel">
+                <div class="tab-content">
+                    <div class="ai-messages">
+                        <div class="user-question">
+                            <div class="user-label">👤 질문</div>
+                            <div>이번 회의의 주요 안건이 뭐였지?</div>
+                        </div>
+                        <div class="ai-message">
+                            <div class="ai-label">🤖 AI 어시스턴트</div>
+                            <div>이번 회의의 주요 안건은 다음과 같습니다:<br><br>
+                            1. Q4 실적 검토<br>
+                            2. 신제품 출시 일정<br>
+                            3. 마케팅 전략 논의<br><br>
+                            추가로 궁금하신 점이 있으신가요?</div>
+                        </div>
+                        <div class="user-question">
+                            <div class="user-label">👤 질문</div>
+                            <div>신제품 출시 일정이 언제로 결정됐어?</div>
+                        </div>
+                        <div class="ai-message">
+                            <div class="ai-label">🤖 AI 어시스턴트</div>
+                            <div>회의 중 김철수님께서 2025년 3월 15일로 출시 일정을 제안하셨고, 참석자들이 동의했습니다.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-input-wrapper">
+                    <div class="tab-input">
+                        <input type="text" placeholder="AI에게 질문하세요...">
+                        <button>전송</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 회의록 탭 -->
+            <div class="tab-panel">
+                <div class="tab-content">
+                    <div class="transcript-items">
+                        <div class="transcript-item">
+                            <div class="transcript-header">
+                                <span class="transcript-speaker">김철수</span>
+                                <span class="transcript-time">14:35:12</span>
+                            </div>
+                            <div class="transcript-text">
+                                안녕하세요 여러분. 오늘 회의를 시작하겠습니다. 먼저 지난주 실적부터 검토해보시죠.
+                            </div>
+                        </div>
+                        <div class="transcript-item">
+                            <div class="transcript-header">
+                                <span class="transcript-speaker">이영희</span>
+                                <span class="transcript-time">14:35:48</span>
+                            </div>
+                            <div class="transcript-text">
+                                네, Q4 실적 자료를 공유드렸습니다. 전년 대비 15% 증가했고 목표치를 달성했습니다.
+                            </div>
+                        </div>
+                        <div class="transcript-item">
+                            <div class="transcript-header">
+                                <span class="transcript-speaker">박민수</span>
+                                <span class="transcript-time">14:36:25</span>
+                            </div>
+                            <div class="transcript-text">
+                                신제품 개발은 순조롭게 진행되고 있습니다. 베타 테스트를 다음 주에 시작할 예정입니다.
+                            </div>
+                        </div>
+                        <div class="transcript-item">
+                            <div class="transcript-header">
+                                <span class="transcript-speaker">최지원</span>
+                                <span class="transcript-time">14:37:10</span>
+                            </div>
+                            <div class="transcript-text">
+                                마케팅 캠페인은 3월 초에 런칭 계획입니다. SNS와 온라인 광고를 중심으로 진행하겠습니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 참가자 팝업 -->
+    <div class="participants-popup" id="participantsPopup">
+        <div class="popup-header">
+            <div class="popup-title">참가자 (6명)</div>
+            <button class="close-btn" onclick="toggleParticipants()">×</button>
+        </div>
+        <div class="participants-list">
+            <div class="participant-list-item">
+                <div class="participant-avatar">👑</div>
+                <div class="participant-info">
+                    <div class="participant-list-name">김철수</div>
+                    <div class="participant-role">호스트 • 발표중</div>
+                </div>
+                <div class="participant-icons">
+                    <span>🎤</span>
+                    <span>📹</span>
+                </div>
+            </div>
+            <div class="participant-list-item">
+                <div class="participant-avatar" style="background: #2196f3;">👤</div>
+                <div class="participant-info">
+                    <div class="participant-list-name">이영희</div>
+                    <div class="participant-role">기획팀</div>
+                </div>
+                <div class="participant-icons">
+                    <span>🎤</span>
+                    <span>📹</span>
+                </div>
+            </div>
+            <div class="participant-list-item">
+                <div class="participant-avatar" style="background: #ff9800;">👤</div>
+                <div class="participant-info">
+                    <div class="participant-list-name">박민수</div>
+                    <div class="participant-role">개발팀</div>
+                </div>
+                <div class="participant-icons">
+                    <span>🎤</span>
+                    <span>📹</span>
+                </div>
+            </div>
+            <div class="participant-list-item">
+                <div class="participant-avatar" style="background: #9c27b0;">👤</div>
+                <div class="participant-info">
+                    <div class="participant-list-name">최지원</div>
+                    <div class="participant-role">마케팅팀</div>
+                </div>
+                <div class="participant-icons">
+                    <span style="color: #e53935;">🔇</span>
+                </div>
+            </div>
+            <div class="participant-list-item">
+                <div class="participant-avatar" style="background: #4caf50;">👤</div>
+                <div class="participant-info">
+                    <div class="participant-list-name">정수진</div>
+                    <div class="participant-role">디자인팀</div>
+                </div>
+                <div class="participant-icons">
+                    <span>🎤</span>
+                    <span>📹</span>
+                </div>
+            </div>
+            <div class="participant-list-item">
+                <div class="participant-avatar" style="background: #f44336;">👤</div>
+                <div class="participant-info">
+                    <div class="participant-list-name">강동훈</div>
+                    <div class="participant-role">영업팀</div>
+                </div>
+                <div class="participant-icons">
+                    <span>🎤</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 컨트롤 바 -->
+    <div class="controls">
+        <div class="control-group">
+            <button class="control-btn on" id="videoBtn" onclick="toggleVideo()">
+                <span class="control-icon">📹</span>
+                <span class="control-label">비디오 켜짐</span>
+            </button>
+            <button class="control-btn on" id="audioBtn" onclick="toggleAudio()">
+                <span class="control-icon">🎤</span>
+                <span class="control-label">오디오 켜짐</span>
+            </button>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="control-group">
+            <button class="control-btn" onclick="toggleParticipants()">
+                <span class="control-icon">👥</span>
+                <span class="control-label">참가자</span>
+            </button>
+            <button class="control-btn" onclick="toggleChat()">
+                <span class="control-icon">💬</span>
+                <span class="control-label">채팅</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 비디오 상태
+        let videoOn = true;
+        let audioOn = true;
+
+        // 비디오 토글
+        function toggleVideo() {
+            videoOn = !videoOn;
+            const btn = document.getElementById('videoBtn');
+            const icon = btn.querySelector('.control-icon');
+            const label = btn.querySelector('.control-label');
+            
+            if (videoOn) {
+                btn.classList.remove('off');
+                btn.classList.add('on');
+                icon.textContent = '📹';
+                label.textContent = '비디오 켜짐';
+            } else {
+                btn.classList.remove('on');
+                btn.classList.add('off');
+                icon.textContent = '📹';
+                label.textContent = '비디오 꺼짐';
+            }
+        }
+
+        // 오디오 토글
+        function toggleAudio() {
+            audioOn = !audioOn;
+            const btn = document.getElementById('audioBtn');
+            const icon = btn.querySelector('.control-icon');
+            const label = btn.querySelector('.control-label');
+            
+            if (audioOn) {
+                btn.classList.remove('off');
+                btn.classList.add('on');
+                icon.textContent = '🎤';
+                label.textContent = '오디오 켜짐';
+            } else {
+                btn.classList.remove('on');
+                btn.classList.add('off');
+                icon.textContent = '🔇';
+                label.textContent = '오디오 꺼짐';
+            }
+        }
+
+        // 채팅 토글
+        function toggleChat() {
+            switchTab(0);
+        }
+        // 탭 전환
+        function switchTab(index) {
+            const tabs = document.querySelectorAll('.tab');
+            const panels = document.querySelectorAll('.tab-panel');
+            
+            tabs.forEach((tab, i) => {
+                tab.classList.toggle('active', i === index);
+            });
+            
+            panels.forEach((panel, i) => {
+                panel.classList.toggle('active', i === index);
+            });
+        }
+
+        // 참가자 팝업 토글
+        function toggleParticipants() {
+            const popup = document.getElementById('participantsPopup');
+            popup.classList.toggle('active');
+        }
+
+        // 팝업 외부 클릭 시 닫기
+        document.addEventListener('click', function(e) {
+            const popup = document.getElementById('participantsPopup');
+            const participantsBtn = document.querySelector('[title="참가자"]');
+            
+            if (popup.classList.contains('active') && 
+                !popup.contains(e.target) && 
+                e.target !== participantsBtn) {
+                popup.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

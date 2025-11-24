@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>화상 회의 시스템 - 로그인</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f2f5;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #fff;
+            padding: 16px 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #4a72ff;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-header {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #4a72ff;
+            border: 1px solid #4a72ff;
+        }
+
+        .btn-outline:hover {
+            background: #f0f5ff;
+        }
+
+        .btn-primary {
+            background: #4a72ff;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #3a62ef;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 48px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4a72ff;
+            background: #fff;
+        }
+
+        .form-input::placeholder {
+            color: #999;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            font-size: 13px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .checkbox-label input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .link {
+            color: #4a72ff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: #4a72ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #3a62ef;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 32px 0;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider span {
+            padding: 0 16px;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .quick-btn {
+            flex: 1;
+            padding: 12px;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .quick-btn:hover {
+            background: #fff;
+            border-color: #4a72ff;
+            color: #4a72ff;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 16px 20px;
+            }
+
+            .container {
+                padding: 32px 24px;
+            }
+
+            .quick-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <span class="logo-icon">📹</span>
+            <span>Video Conference</span>
+        </div>
+        <div class="header-actions">
+            <button class="btn-header btn-outline" onclick="location.href='#signup'">
+                회원가입
+            </button>
+            <button class="btn-header btn-primary" onclick="location.href='#login'">
+                로그인
+            </button>
+        </div>
+    </div>
+
+    <main class="main">
+        <div class="container">
+            <div class="form-header">
+                <h1 class="form-title">로그인</h1>
+                <p class="form-subtitle">회사 계정으로 로그인하세요</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">이메일</label>
+                    <input 
+                        type="email" 
+                        class="form-input" 
+                        placeholder="example@company.com"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">비밀번호</label>
+                    <input 
+                        type="password" 
+                        class="form-input" 
+                        placeholder="비밀번호를 입력하세요"
+                        required
+                    >
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox">
+                        <span>로그인 상태 유지</span>
+                    </label>
+                    <a href="#" class="link">비밀번호 찾기</a>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    로그인
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>빠른 시작</span>
+            </div>
+
+            <div class="quick-actions">
+                <button class="quick-btn" onclick="location.href='create-room.html'">
+                    <span>➕</span>
+                    <span>회의 생성</span>
+                </button>
+                <button class="quick-btn" onclick="location.href='join-room.html'">
+                    <span>🚪</span>
+                    <span>회의 참가</span>
+                </button>
+            </div>
+
+            <div class="footer-text">
+                계정이 없으신가요? <a href="#signup" class="link">회원가입</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // 로그인 로직 추가
+            alert('로그인 성공!');
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>

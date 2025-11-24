@@ -101,15 +101,14 @@ podman run -d \
   -p 10000-10500:10000-10500/udp \
   canyan/janus-gateway:latest
 
-# 컨테이너 제거
-podman stop janus-test && podman rm janus-test
-
-
 # Janus 로그 확인
 podman logs janus-test
 
 # Janus 정보 조회
 curl -s http://localhost:8088/janus/info
+
+# 컨테이너 제거
+podman stop janus-test && podman rm janus-test
 ```
 
 

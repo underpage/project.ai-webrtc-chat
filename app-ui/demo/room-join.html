@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회의방 접속</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Inter", Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .join-container {
+      background: #fff;
+      padding: 36px;
+      border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+      width: 380px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 16px;
+      font-size: 22px;
+      color: #222;
+    }
+
+    .meta-info {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.4;
+      margin-bottom: 18px;
+    }
+
+    .room-info {
+      background: #f7f7f7;
+      padding: 14px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    .room-info h2 {
+      margin: 0 0 6px 0;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .room-info p {
+      margin: 0;
+      font-size: 14px;
+      color: #555;
+      line-height: 1.4;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    label {
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #555;
+    }
+
+    input[type="text"] {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      outline: none;
+      background: #fafafa;
+    }
+
+    .join-btn {
+      width: 100%;
+      padding: 12px 0;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      background: #4a72ff;
+      color: #fff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="join-container">
+    <h1>회의 참가</h1>
+
+    <!-- 방 정보 표시 -->
+    <div class="room-info">
+      <h2>신규 기능 기획 회의</h2>
+      <p>서비스 구조 논의 및 API 연동 범위 확정 회의입니다.</p>
+    </div>
+
+    <!-- 사용자 정보 입력 -->
+    <div class="form-group">
+      <label for="username">사용자 이름</label>
+      <input type="text" id="username" placeholder="이름을 입력하세요">
+    </div>
+    
+    <div class="form-group">
+      <label for="username">부서명</label>
+      <input type="text" id="username" placeholder="부서명을 입력하세요">      
+    </div>
+
+    <button class="join-btn">참가하기</button>
+  </div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebRTC Chat - Join Room</title>
+    <link rel="stylesheet" href="/css/common/reset.css" />
+    <link rel="stylesheet" href="/css/common/variables.css" />
+    <link rel="stylesheet" href="/css/common/global.css" />
+
+    <link rel="stylesheet" href="/css/page/auth.css" />
+</head>
+
+<body>
+    <div id="app">
+        <header class="header">
+            <a href="/" class="logo">
+                <span class="logo-icon">📹</span>
+                <span>WebRTC Chat</span>
+            </a>
+            <div id="header-actions-container" class="header-actions">
+                <a href="/page/auth/signup.html" class="btn-header btn-outline">
+                    Sign Up
+                </a>
+                <a href="/page/auth/login.html" class="btn-header btn-primary">
+                    Login
+                </a>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="container">
+                <div class="form-header">
+                    <h1 class="form-title">Join Existing Room</h1>
+                    <p class="form-subtitle">Enter room details to join the meeting.</p>
+                    <p id="loggedInUserInfo" class="form-subtitle" style="display: none;"></p>
+                </div>
+
+                <form id="joinRoomForm">
+                    <div class="form-group">
+                        <label class="form-label" for="roomId">Room ID</label>
+                        <input id="roomId" type="text" class="form-input" placeholder="Enter Room ID" required>
+                    </div>
+
+                    <!-- Non-member fields -->
+                    <div id="nonMemberFields" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label" for="userName">Your Name</label>
+                            <input id="userName" type="text" class="form-input" placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="userDepartment">Department</label>
+                            <input id="userDepartment" type="text" class="form-input" placeholder="Enter your department">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="userCompany">Company Name</label>
+                            <input id="userCompany" type="text" class="form-input" placeholder="Enter your company name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="roomPassword">Room Password (Optional)</label>
+                        <input id="roomPassword" type="password" class="form-input" placeholder="If required by the room">
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">Join Room</button>
+                </form>
+
+                 <div class="footer-text">
+                    <a href="/" class="link">Back to Lobby</a>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 AI WebRTC Chat. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script type="module" src="/js/page/room/join.page.js"></script>
+    <script type="module" src="/js/common/header.js"></script>
+</body>
+</html>

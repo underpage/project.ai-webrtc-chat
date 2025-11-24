@@ -1,0 +1,593 @@
+body {
+    background: #1a1a1a;
+    color: #fff;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.header {
+    background: #2a2a2a;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #3a3a3a;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.room-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.room-info {
+    font-size: 13px;
+    color: #888;
+}
+
+.btn-danger {
+    background: #e53935;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c62828;
+}
+
+.main-container {
+    display: flex;
+    height: calc(100vh - 120px); /* Adjust based on header/footer height */
+}
+
+.video-area {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.main-video {
+    flex: 1;
+    background: #0a0a0a;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-video::before {
+    content: "메인 비디오";
+    position: absolute;
+    font-size: 24px;
+    color: #444;
+}
+
+.video-label {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.participants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    height: 220px;
+}
+
+.participant-video {
+    aspect-ratio: 16/9;
+    background: #0a0a0a;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.participant-video.speaking {
+    border-color: #4caf50;
+}
+
+.participant-video::before {
+    content: "👤";
+    font-size: 48px;
+}
+
+.participant-name {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.participant-status {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+}
+
+.status-icon {
+    width: 24px;
+    height: 24px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.muted {
+    color: #e53935;
+}
+
+.sidebar {
+    width: 360px;
+    background: #2a2a2a;
+    border-left: 1px solid #3a3a3a;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-tabs {
+    display: flex;
+    border-bottom: 1px solid #3a3a3a;
+}
+
+.tab {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.tab:hover {
+    color: #bbb;
+    background: #333;
+}
+
+.tab.active {
+    color: #fff;
+    background: #1a1a1a;
+}
+
+.tab-panel {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.tab-panel.active {
+    display: flex;
+}
+
+.tab-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+}
+
+.tab-input-wrapper {
+    padding: 12px 16px;
+    background: #2a2a2a;
+    border-top: 1px solid #3a3a3a;
+}
+
+.tab-input {
+    display: flex;
+    gap: 8px;
+}
+
+.tab-input input {
+    flex: 1;
+    padding: 10px 12px;
+    background: #3a3a3a;
+    border: 1px solid #4a4a4a;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 14px;
+}
+
+.tab-input input:focus {
+    outline: none;
+    border-color: #4caf50;
+}
+
+.tab-input button {
+    padding: 10px 20px;
+    background: #4caf50;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.tab-input button:hover {
+    background: #45a049;
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+.message-author {
+    font-weight: 600;
+    color: #4caf50;
+}
+
+.message-time {
+    color: #888;
+}
+
+.message-content {
+    background: #3a3a3a;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.ai-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.user-question {
+    background: #3a3a3a;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.user-label {
+    font-size: 12px;
+    color: #4caf50;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.ai-message {
+    background: #1e3a5f;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.ai-label {
+    font-size: 12px;
+    color: #64b5f6;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.transcript-items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.transcript-item {
+    border-left: 3px solid #4caf50;
+    padding-left: 12px;
+}
+
+.transcript-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 12px;
+}
+
+.transcript-speaker {
+    font-weight: 600;
+    color: #4caf50;
+}
+
+.transcript-time {
+    color: #888;
+}
+
+.transcript-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #ddd;
+}
+
+.participants-popup {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 320px;
+    max-height: 480px;
+    background: #2a2a2a;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    z-index: 1000;
+    transform: translateX(400px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.participants-popup.active {
+    display: flex;
+    flex-direction: column;
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.popup-header {
+    padding: 16px;
+    border-bottom: 1px solid #3a3a3a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.close-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: #3a3a3a;
+    color: #888;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.2s;
+}
+
+.close-btn:hover {
+    background: #4a4a4a;
+    color: #fff;
+}
+
+.participants-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+}
+
+.participant-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background: #3a3a3a;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.participant-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #4caf50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.participant-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.participant-list-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.participant-role {
+    font-size: 12px;
+    color: #888;
+}
+
+.participant-icons {
+    display: flex;
+    gap: 8px;
+}
+
+.controls {
+    background: #2a2a2a;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    border-top: 1px solid #3a3a3a;
+}
+
+.control-group {
+    display: flex;
+    gap: 12px;
+}
+
+.control-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #3a3a3a;
+    color: white;
+    transition: all 0.2s;
+    min-width: 100px;
+}
+
+.control-btn:hover {
+    background: #4a4a4a;
+}
+
+.control-btn.on {
+    background: #4caf50;
+}
+
+.control-btn.on:hover {
+    background: #45a049;
+}
+
+.control-btn.off {
+    background: #e53935;
+}
+
+.control-btn.off:hover {
+    background: #c62828;
+}
+
+.control-icon {
+    font-size: 24px;
+}
+
+.control-label {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.divider {
+    width: 1px;
+    height: 48px;
+    background: #3a3a3a;
+}
+
+/* 스크롤바 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #2a2a2a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4a4a4a;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #5a5a5a;
+}
+
+/** Modal **/
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background: #2a2a2a;
+    border-radius: 12px;
+    padding: 24px;
+    width: 100%;
+    max-width: 540px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.modal-body .video-preview {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #000;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.modal-body .video-preview video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-body .media-controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.modal-footer {
+    text-align: center;
+}
+
+#join-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+}
+
+#join-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+}

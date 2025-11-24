@@ -1,0 +1,88 @@
+.main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: var(--color-secondary);
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    background: var(--color-white);
+    border-radius: 12px;
+    padding: 60px 48px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.error-icon {
+    font-size: 120px;
+    margin-bottom: 24px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.error-code {
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 16px;
+}
+
+.error-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--color-black);
+    margin-bottom: 16px;
+}
+
+.error-message {
+    font-size: 16px;
+    color: var(--color-text-medium);
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 40px 24px;
+    }
+
+    .error-icon {
+        font-size: 80px;
+    }
+
+    .error-code {
+        font-size: 56px;
+    }
+
+    .error-title {
+        font-size: 24px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

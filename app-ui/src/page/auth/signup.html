@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebRTC Chat - Sign Up</title>
+    <link rel="stylesheet" href="/css/common/reset.css" />
+    <link rel="stylesheet" href="/css/common/variables.css" />
+    <link rel="stylesheet" href="/css/common/global.css" />
+
+    <link rel="stylesheet" href="/css/page/auth.css" />
+</head>
+
+<body>
+    <div id="app">
+        <header class="header">
+            <a href="/" class="logo">
+                <span class="logo-icon">📹</span>
+                <span>WebRTC Chat</span>
+            </a>
+            <div id="header-actions-container" class="header-actions">
+                <a href="/page/auth/signup.html" class="btn-header btn-outline">
+                    Sign Up
+                </a>
+                <a href="/page/auth/login.html" class="btn-header btn-primary">
+                    Login
+                </a>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="container">
+                <div class="form-header">
+                    <h1 class="form-title">Create Account</h1>
+                    <p class="form-subtitle">Get started with a new account.</p>
+                </div>
+
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Name</label>
+                        <input id="name" type="text" class="form-input" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input id="email" type="email" class="form-input" placeholder="example@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="userId">User ID</label>
+                        <input id="userId" type="text" class="form-input" placeholder="Create a user ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input id="password" type="password" class="form-input" placeholder="Create a password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">Create Account</button>
+                </form>
+
+                 <div class="footer-text">
+                    Already have an account? <a href="/page/auth/login.html" class="link">Log in</a>
+                </div>
+            </div>
+        </main>
+
+
+        <footer class="footer">
+            <p>&copy; 2025 AI WebRTC Chat. All rights reserved.</p>
+        </footer>
+    </div>
+    <script type="module" src="/js/page/auth/signup.page.js"></script>
+    <script type="module" src="/js/common/header.js"></script>
+</body>
+</html>

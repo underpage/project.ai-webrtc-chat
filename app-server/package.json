@@ -1,0 +1,40 @@
+{
+  "name": "app-server",
+  "version": "1.0.0",
+  "description": "클라이언트와 Janus Gateway 사이를 중계하고 비즈니스 로직을 수행하는 메인 서버입니다.",
+  "license": "ISC",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "build:ui": "cd ../app-ui && npm run build",
+    "copy:ui": "node scripts/deploy-ui.js",
+    "deploy": "npm run build:ui && npm run copy:ui && npm start",
+    "deploy:dev": "npm run build:ui && npm run copy:ui && npm run dev"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.2.1",
+    "express-session": "^1.18.2",
+    "fs-extra": "^11.3.2",
+    "janode": "^1.8.0",
+    "joi": "^18.0.2",
+    "mysql2": "^3.15.3",
+    "node-fetch": "^3.3.2",
+    "pino": "^10.1.0",
+    "uuid": "^13.0.0",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11",
+    "pino-pretty": "^13.1.2"
+  }
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebRTC Chat - Lobby</title>
+    <link rel="stylesheet" href="/css/common/reset.css" />
+    <link rel="stylesheet" href="/css/common/variables.css" />
+    <link rel="stylesheet" href="/css/common/global.css" />
+
+    <link rel="stylesheet" href="/css/page/lobby.css" />
+</head>
+
+<body>
+    <div id="app">
+        <header class="header">
+            <a href="/" class="logo">
+                <span class="logo-icon">📹</span>
+                <span>WebRTC Chat</span>
+            </a>
+            <div id="header-actions-container" class="header-actions">
+                <a href="/page/auth/signup.html" class="btn-header btn-outline">
+                    Sign Up
+                </a>
+                <a href="/page/auth/login.html" class="btn-header btn-primary">
+                    Login
+                </a>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="lobby-container">
+                <div class="search-bar">
+                    <input type="text" id="search-input" class="form-input" placeholder="회의실 제목 또는 설명 검색">
+                    <button class="btn-small-primary" id="search-button">검색</button>
+                </div>
+                <button class="btn-small-primary" id="create-room-btn-main" style="margin-top: 10px;">Create Room</button>
+
+                <div class="room-list-header">
+                    <h2>Available Rooms</h2>
+                    <button class="btn-small-secondary" id="refresh-rooms-btn">Refresh</button>
+                </div>
+
+                <ul id="room-list" class="room-list">
+                </ul>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 AI WebRTC Chat. All rights reserved.</p>
+        </footer>
+    </div>
+
+
+    <div id="create-room-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create a New Room</h2>
+                <button id="close-modal-btn" class="close-btn">&times;</button>
+            </div>
+            <form id="create-room-form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label" for="room-title">Room Title</label>
+                        <input id="room-title" type="text" class="form-input" placeholder="e.g., Q4 Project Planning" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="room-description">Description (Optional)</label>
+                        <input id="room-description" type="text" class="form-input" placeholder="A brief description of the room">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="room-password">Password (Optional)</label>
+                        <input id="room-password" type="password" class="form-input" placeholder="Leave blank for a public room">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn-small-primary">Create and Join</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script type="module" src="/js/page/index.page.js"></script>
+    <script type="module" src="/js/common/header.js"></script>
+</body>
+</html>

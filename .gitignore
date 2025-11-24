@@ -21,7 +21,7 @@ pnpm-debug.log*
 # ---------------------------------
 app-server/node_modules/
 app-server/coverage/
-app-server/public/*
+app-server/public/
 
 
 # ---------------------------------
