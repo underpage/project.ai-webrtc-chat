@@ -1,0 +1,47 @@
+# ----------------------------------------------------------
+# Core Settings (EOL Normalization)
+# ----------------------------------------------------------
+
+* text=auto
+
+# Source Code & Config
+*.java      text eol=lf
+*.js        text eol=lf
+*.jsx       text eol=lf
+*.ts        text eol=lf
+*.tsx       text eol=lf
+*.json      text eol=lf
+*.css       text eol=lf
+*.html      text eol=lf
+*.md        text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.sh        text eol=lf
+*.bat       text eol=crlf
+
+*.jcfg      text eol=lf
+
+# ----------------------------------------------------------
+# Binary Files (Prevent corrupted merges)
+# ----------------------------------------------------------
+
+# Images
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.svg       text
+
+# Archives & Executables
+*.jar       binary
+*.war       binary
+*.zip       binary
+*.tar       binary
+*.gz        binary
+
+# LLM
+*.gguf      binary
+*.bin       binary
+*.pt        binary
+*.pth       binary

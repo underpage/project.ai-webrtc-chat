@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  janus:
+    image: canyan/janus-gateway:latest
+    container_name: janus_container
+    environment:
+      - STUN_SERVER=stun.l.google.com
+      - STUN_PORT=19302
+      - JANUS_SERVER_NAME=MyJanusServer
+      - DEBUG_LEVEL=4
+      #- NAT_1_1_MAPPING_ENABLED=true
+      #- WEBSOCKETS_ENABLED=true
+    ports:
+      - "8088:8088"
+      - "8188:8188"
+      - "10000-10500:10000-10500/udp"
+    volumes:
+      - ./conf/janus.jcfg:/usr/local/etc/janus/janus.jcfg
+      - ./conf/janus.plugin.videoroom.jcfg:/usr/local/etc/janus/janus.plugin.videoroom.jcfg
+    
+    restart: unless-stopped
+
+    networks:
+      - chat-net
+      
+networks:
+  chat-net:
+    external: true

@@ -1,0 +1,11 @@
+room-9999: {
+    description = "Test Room"
+    secret = "secret"
+    publishers = 4
+    bitrate = 1024000
+    fir_freq = 10
+    audiocodec = "opus"
+    videocodec = "vp8"
+    record = false
+    rec_dir = "/tmp"
+}
